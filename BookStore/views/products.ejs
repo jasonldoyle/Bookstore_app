@@ -1,0 +1,140 @@
+<%- include('partials/header') %>
+
+<div class="container py-4">
+  <!-- Form for searching and filtering products -->
+  <form action="/products" method="GET" class="mb-4 border p-3 rounded bg-light">
+    <div class="row g-3">
+
+      <!-- Search input field for book titles or Authors -->
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Search books..." value="<%= filters.search %>">
+      </div>
+
+      <!-- Input for min price filter -->
+      <div class="col-md-2">
+        <input type="number" step="0.25" name="minPrice" class="form-control" placeholder="Min Price (€)" value="<%= filters.minPrice %>">
+      </div>
+
+      <!-- Input for max price filter -->
+      <div class="col-md-2">
+        <input type="number" step="0.25" name="maxPrice" class="form-control" placeholder="Max Price (€)" value="<%= filters.maxPrice %>">
+      </div>
+
+      <!-- Dropdown for selecting book category -->
+      <div class="col-md-2">
+        <select class="form-select" name="category">
+          <option value="all" <%= filters.category === 'all' ? 'selected' : '' %>>All</option>
+          <option value="fiction" <%= filters.category === 'fiction' ? 'selected' : '' %>>Fiction</option>
+          <option value="nonfiction" <%= filters.category === 'nonfiction' ? 'selected' : '' %>>Non-Fiction</option>
+          <option value="sci-fi" <%= filters.category === 'sci-fi' ? 'selected' : '' %>>Sci-Fi</option>
+          <option value="fantasy" <%= filters.category === 'fantasy' ? 'selected' : '' %>>Fantasy</option>
+          <option value="romance" <%= filters.category === 'romance' ? 'selected' : '' %>>Romance</option>
+          <option value="history" <%= filters.category === 'history' ? 'selected' : '' %>>History</option>
+        </select>
+      </div>
+
+      <!-- Submit button for filtering/searching -->
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100">Search & Filter</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      <!-- Heading for list of available books -->
+      <h2 class="mb-4">Books Available</h2>
+
+      <!-- Check if the books exist to display -->
+      <% if (books.length > 0) { %>
+        <div class="row">
+          <% books.forEach(book => { %>
+            <!-- Column layout for each book card -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <!-- Card layout for displaying one book -->
+              <div class="card h-100 shadow-sm">
+                <img src="/images/<%= book.image %>" class="card-img-top" alt="<%= book.title %>">
+                
+                <div class="card-body d-flex flex-column justify-content-between">
+                  <div>
+                    <h5 class="card-title"><%= book.title %></h5>
+                    <p class="card-text mb-1"><strong>Author:</strong> <%= book.author %></p>
+                    <p class="card-text"><strong>Price:</strong> €<%= book.price.toFixed(2) %></p>
+                    <p class="card-text"><strong>Genre:</strong> <%= book.category %></p>
+                  </div>
+
+                  <!-- Form to add the book to the shopping cart -->
+                  <form class="add-to-cart-form" data-book-id="<%= book.id %>">
+                    <input type="hidden" name="bookId" value="<%= book.id %>">
+                    <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm mb-2" required>
+                    <button type="submit" class="btn btn-sm btn-outline-success w-100">Add to Cart</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <!-- Message shown when no books match the filters -->
+        <p class="text-muted">No books match your search or filters.</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container for showing confirm messages -->
+<div id="toast-container" class="position-fixed top-0 end-0 p-4" style="z-index: 1055;"></div>
+
+<script>
+  // Attach submit event to each 'Add to Cart' form
+  document.querySelectorAll('.add-to-cart-form').forEach(form => {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      // Extract form data and prepare request payload
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+
+      // Send POST request to server to add item to cart
+      const response = await fetch('/cart/add', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data
+      });
+
+      // Parse the JSON response
+      const result = await response.json();
+
+      // Show toast based on success or failure
+      if (result.success) {
+        showToast('✅ Item added to cart!');
+      } else {
+        showToast('❌ Failed to add item.');
+      }
+    });
+  });
+
+  // Function to display a temporary toast message
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast align-items-center text-bg-success border-0 show mb-2';
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    `;
+
+    // Append toast to the toast container
+    document.getElementById('toast-container').appendChild(toast);
+
+    // Remove toast after 3 seconds
+    setTimeout(() => toast.remove(), 3000);
+  }
+</script>
+
+<%- include('partials/footer') %>

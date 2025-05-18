@@ -1,0 +1,213 @@
+/*  General Layout  */
+
+/* Sets global font, background, text color and spacing */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #212529;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Limits the width of content and applies padding around the page */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+
+/*  Navbar & Footer  */
+
+/* Styled for brand in navbar */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Styling for links in the navbar */
+.nav-link {
+  margin-left: 1rem;
+  transition: color 0.2s ease-in-out;
+  color: #f9f9f9;
+}
+
+/* Hover color for navbar links */
+.nav-link:hover {
+  color: #0dcaf0 !important;
+}
+
+/* Footer styling for smaller text, dark background and light text color */
+footer {
+  font-size: 0.9rem;
+  background-color: #111;
+  color: #ccc;
+}
+
+
+/* Hero Carousel  */
+
+/* Sets carousel image height and darkens for contrast */
+.carousel-item img {
+  height: 80vh;
+  object-fit: cover;
+  filter: brightness(55%);
+}
+
+/* Styles for text overlay on carousel images */
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  margin-left: 5%;
+  bottom: 20%;
+  left: 5%;
+  text-align: left;
+  position: absolute;
+}
+
+/* Larger bold headings in carousel caption */
+.carousel-caption h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* Paragraph text inside carousel caption */
+.carousel-caption p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+/* Buttons inside carousel caption */
+.carousel-caption .btn {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+}
+
+/* Allows for overflow visibility on carousel inner content */
+.carousel-inner.overflow-visible {
+  overflow: visible;
+}
+
+/* Adjusts vertical position of carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+  top: 35%;
+}
+
+
+/*  Buttons  */
+
+/* General button styl */
+.btn {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.2rem;
+}
+
+/* Custom button for failure and error actions */
+.btn-failure {
+  background-color: #871919;
+  border: none;
+}
+
+/* Custom success button styling */
+.btn-success {
+  background-color: #198754;
+  border: none;
+}
+
+/* Darker hover effect for success button */
+.btn-success:hover {
+  background-color: #151147;
+}
+
+
+/*  Cards  */
+
+/* Cards shadow and animation */
+.card {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Raises cards slightly on hover */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card title styling */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Card text styling */
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Limits the card image height and crops it properly */
+.card-img-top {
+  height: 500px;
+  object-fit: cover;
+}
+
+
+/*  Forms  */
+
+/* Style input and textarea fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  border-radius: 6px;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s;
+}
+
+/* Highlights input and textarea on focus */
+input:focus,
+textarea:focus {
+  border-color: #0d6efd;
+  outline: none;
+}
+
+
+/*  Alerts  */
+
+/* General styling for alert boxes */
+.alert {
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+
+/*  Simple Responsiveness  */
+
+/* Adjust carousel caption and fonts on smaller screens */
+@media (max-width: 768px) {
+  /* Make carousel caption full width and more compact */
+  .carousel-caption {
+    margin-left: 0;
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  /* Reduce brand size for mobile view */
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+
+  /* Smaller card titles for compact layout */
+  .card-title {
+    font-size: 1.1rem;
+  }
+}

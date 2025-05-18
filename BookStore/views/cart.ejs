@@ -1,0 +1,48 @@
+<%- include('partials/header') %>
+
+<!-- Main container for the shopping cart content -->
+<div class="container py-5">
+  <!-- Page heading -->
+  <h2 class="mb-4">🛒 Your Shopping Cart</h2>
+
+  <!-- Check if the cart is empty -->
+  <% if (cartItems.length === 0) { %>
+    <!-- Message displayed when no items are in the cart -->
+    <p class="text-muted">Your cart is empty.</p>
+  <% } else { %>
+    <!-- Table displaying items in the cart -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through each item in the cart and display details -->
+        <% cartItems.forEach(item => { %>
+          <tr>
+            <td><%= item.title %></td>
+            <td><%= item.author %></td>
+            <td>€<%= item.price.toFixed(2) %></td>
+            <td><%= item.quantity %></td>
+            <td>€<%= item.total %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <!-- Controls for clearing the cart and displaying total price -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <!-- Button to clear the cart -->
+      <a href="/cart/clear" class="btn btn-outline-danger">Clear Cart</a>
+      <!-- Display total cost of items in cart -->
+      <h4 class="mb-0">Total: €<%= total %></h4>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

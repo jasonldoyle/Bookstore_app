@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<!-- Main container for contact form -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <!-- Centered column for the contact card -->
+    <div class="col-md-8 col-lg-6">
+      <!-- Bootstrap card with shadow and padding -->
+      <div class="card shadow-sm border-0 p-4">
+        <!-- Section heading -->
+        <h2 class="text-center mb-4">Contact Us</h2>
+
+        <!-- Contact form with client side val -->
+        <form id="contactForm">
+          <!-- Input field for user name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" name="name" id="name" class="form-control" required>
+          </div>
+
+          <!-- Input field for user email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+          </div>
+
+          <!-- Textarea field for user message -->
+          <div class="mb-3">
+            <label for="message" class="form-label">Message:</label>
+            <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
+          </div>
+
+          <!-- Submit button to send form -->
+          <button type="submit" class="btn btn-primary w-100">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container to show submission confirmation -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+  <div id="contactToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <!-- Message content will be inserted dynamically -->
+      <div class="toast-body" id="toastMsg">Message sent successfully!</div>
+      <!-- Button to close the toast -->
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Attach event listener to contact form submission
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Collect form data
+    const formData = new FormData(this);
+    const data = new URLSearchParams(formData);
+
+    // Send POST request to /contact route using Fetch API
+    const res = await fetch('/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: data
+    });
+
+    // Parse server response and display toast with returned message
+    const result = await res.json();
+    document.getElementById('toastMsg').textContent = result.message;
+
+    // Show toast using Bootstrap toast component
+    const toast = new bootstrap.Toast(document.getElementById('contactToast'));
+    toast.show();
+  });
+</script>
+
+<%- include('partials/footer') %>
